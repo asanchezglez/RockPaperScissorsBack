@@ -57,8 +57,6 @@ import rockPaperScissors.model.Round;
  *
  */
 @RequestMapping("/game")
-//@Produces(MediaType.APPLICATION_JSON)
-//@Consumes(MediaType.APPLICATION_JSON)
 @RestController
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class GameController {
@@ -83,7 +81,6 @@ public class GameController {
 		Game result = new Game(gameId);
 		String message = "{\"gameId\": \"%s\"}";
 		LOGGER.info("created game with id: " + gameId);
-		//return Response.ok(String.format(message,gameId)).build();
 		return result;
 	}
 	
@@ -93,24 +90,12 @@ public class GameController {
 	 * @param hand Hand the human player has played
 	 * @return result of the round
 	 */
-	//@POST
-	//@Path("/{gameId}")
-	//@Produces(MediaType.APPLICATION_JSON)
 	@PostMapping("/{gameId}")
 	public Round playRound(@PathVariable("gameId")  int gameId, @RequestParam("hand") Hand handPlayed) {
 		LOGGER.info("playRound for GameId " + gameId + " and hand " + handPlayed);
 
-		//ResponseBuilder response = null;
-		//Round result;
-		//try {
 		Round result = GameManager.getInstance().playRound(gameId, handPlayed); //Catch needed?
-			//response = Response.ok(result);
 			LOGGER.info("playRound for GameId " + gameId + " and hand " + handPlayed +" Result " + result.getResult());
-//		}catch (Exception exc) {
-//			LOGGER.error("Error on playRound for gameId " + gameId +". Message: "+ exc.getMessage());
-//			//response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(exc.getMessage());
-//		}
-		//return response.build();
 			return result;
 	}
 	
@@ -119,20 +104,11 @@ public class GameController {
 	 * @param gameId Id of the game
 	 * @return List of rounds
 	 */
-	//@GET
 	@GetMapping("/{gameId}")
 	public List<Round> getGameRounds(@PathVariable("gameId") int gameId) {
 		LOGGER.info("getGameRounds for gameId " + gameId);
-		//ResponseBuilder response = null;
-		//try {
 		 List<Round> gameRounds = GameManager.getInstance().getGameRounds(gameId);
-		 //response = Response.ok(gameRounds);
-//		}catch (Exception exc) {
-//			LOGGER.error("Error on getGameRounds for gameId " + gameId +". Message: "+ exc.getMessage());
-//			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(exc.getMessage());
-//			
-//		}
-		//return response.build();
+
 		 return gameRounds;
 	}
 	
@@ -143,7 +119,6 @@ public class GameController {
 	@GetMapping("/")
 	public GameStatistics getStatistics() {
 		LOGGER.info("getStatistics");
-		//return Response.ok(GameManager.getInstance().getStatistics()).build();
 		return GameManager.getInstance().getStatistics();
 	}
 	
@@ -154,14 +129,7 @@ public class GameController {
 	@PostMapping("/{gameId}/restart")
 	public void restartGame(@PathVariable("gameId") int gameId) {
 		LOGGER.info("restartGame for gameId " + gameId);
-		//try {
 			GameManager.getInstance().restartGame(gameId);
-//		}catch (Exception exc) {
-//			LOGGER.error("Error on restartGame for gameId " + gameId +". Message: "+ exc.getMessage());
-//			Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(exc.getMessage());
-//			
-//		}
-		//return Response.accepted().build();
 	}
 	
 	@ExceptionHandler({RockPaperScissorsException.class})
